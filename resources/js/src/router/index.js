@@ -15,7 +15,6 @@ import admin from './routes/admin'
 import client from './routes/client'
 import staff from './routes/staff'
 
-
 Vue.use(VueRouter)
 
 const router = new VueRouter({

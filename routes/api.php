@@ -28,5 +28,5 @@ Route::group(['prefix' => 'auth'], function () {
       Route::post('2fa', [AuthController::class, 'verifyTwoFactor'])->name('twofactor.verify');
     });
 
-    Route::get('email/verify/{id}/{hash}', [AuthController::class, 'verifyEmail'])->name('verification.verify');
+    Route::get('email/verify/{id}/{hash}', [AuthController::class, 'verifyEmail'])->name('email-verification.verify');
 });
