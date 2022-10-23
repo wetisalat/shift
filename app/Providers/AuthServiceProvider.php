@@ -58,13 +58,13 @@ class AuthServiceProvider extends ServiceProvider
               return $verifyUrl;
         });*/
 
-        // VerifyEmail::toMailUsing(function ($notifiable, $url) {
-        //     \Log::info('VerifyEmail ---> ' . $url);
+        VerifyEmail::toMailUsing(function ($notifiable, $url) {
+            \Log::info('VerifyEmail ---> ' . $url);
 
-        //     return (new MailMessage)->view(
-        //         'emails.verify', ['url' => $url]
-        //     );
-        // });  
+            return (new MailMessage)->view(
+                'emails.verify', ['url' => $url]
+            );
+        });  
         
         ResetPassword::createUrlUsing(function ($user, string $token) {
             \Log::info('ResetPassword ---> ' . url('reset-password').'?token='.$token);
