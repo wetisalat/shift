@@ -20,22 +20,6 @@ export default [
     },
   },
   {
-    path: '/pages/authentication/login-v1',
-    name: 'auth-login-v1',
-    component: () => import('@/views/pages/authentication/Login-v1.vue'),
-    meta: {
-      layout: 'full',
-    },
-  },
-  {
-    path: '/pages/authentication/login-v2',
-    name: 'auth-login-v2',
-    component: () => import('@/views/pages/authentication/Login-v2.vue'),
-    meta: {
-      layout: 'full',
-    },
-  },
-  {
     path: '/register',
     name: 'auth-register',
     component: () => import('@/views/pages/authentication/Register.vue'),
@@ -43,6 +27,45 @@ export default [
       layout: 'full',
       resource: 'Auth',
       redirectIfLoggedIn: true,
+    },
+  },
+  {
+    path: '/2fa',
+    name: 'auth-2fa',
+    component: () => import('@/views/pages/authentication/TwoFactor.vue'),
+    meta: {
+      layout: 'full',
+      resource: 'Auth',
+      redirectIfLoggedIn: false,
+    },
+  },
+  {
+    path: '/verify-email',
+    name: 'auth-verify-email',
+    component: () => import('@/views/pages/authentication/VerifyEmail.vue'),
+    meta: {
+      layout: 'full',
+      resource: 'Auth',
+      redirectIfLoggedIn: false,
+    },
+  },
+  {
+    path: '/forgot-password',
+    name: 'auth-forgot-password',
+    component: () => import('@/views/pages/authentication/ForgotPassword.vue'),
+    meta: {
+      layout: 'full',
+      resource: 'Auth',
+      redirectIfLoggedIn: true,
+    },
+  },
+  {
+    path: '/reset-password',
+    name: 'auth-reset-password',
+    component: () => import('@/views/pages/authentication/ResetPassword.vue'),
+    meta: {
+      layout: 'full',
+      resource: 'Auth',
     },
   },
   {
@@ -59,16 +82,6 @@ export default [
     component: () => import('@/views/pages/authentication/Register-v2.vue'),
     meta: {
       layout: 'full',
-    },
-  },
-  {
-    path: '/forgot-password',
-    name: 'auth-forgot-password',
-    component: () => import('@/views/pages/authentication/ForgotPassword.vue'),
-    meta: {
-      layout: 'full',
-      resource: 'Auth',
-      redirectIfLoggedIn: true,
     },
   },
   {

@@ -38,34 +38,33 @@
           lg="12"
           class="px-xl-2 mx-auto"
         >
-          <b-card-title class="mb-1">
-            Forgot Password? 🔒
-          </b-card-title>
           <b-card-text class="mb-2">
-            Enter your email and we'll send you instructions to reset your password
+            Please confirm access to your account by entering the authentication code provided by your authenticator application.
           </b-card-text>
 
           <!-- form -->
-          <validation-observer ref="simpleRules">
+          <validation-observer
+            ref="twoFactorForm"
+            #default="{invalid}"
+          >
             <b-form
               class="auth-forgot-password-form mt-2"
               @submit.prevent="validationForm"
             >
               <b-form-group
-                label="Email"
-                label-for="forgot-password-email"
+                label="Code"
+                label-for="2fa-code"
               >
                 <validation-provider
                   #default="{ errors }"
-                  name="Email"
-                  rules="required|email"
+                  name="Code"
+                  rules="required"
                 >
                   <b-form-input
-                    id="forgot-password-email"
-                    v-model="userEmail"
+                    id="2fa-code"
+                    v-model="userCode"
                     :state="errors.length > 0 ? false:null"
-                    name="forgot-password-email"
-                    placeholder="john@example.com"
+                    name="2fa-code"
                   />
                   <small class="text-danger">{{ errors[0] }}</small>
                 </validation-provider>
@@ -75,17 +74,12 @@
                 type="submit"
                 variant="primary"
                 block
+                :disabled="invalid"
               >
-                Send reset link
+                Proceed
               </b-button>
             </b-form>
           </validation-observer>
-
-          <p class="text-center mt-2">
-            <b-link :to="{name:'auth-login'}">
-              <feather-icon icon="ChevronLeftIcon" /> Back to login
-            </b-link>
-          </p>
         </b-col>
       </b-col>
       <!-- /Forgot password-->
@@ -97,11 +91,11 @@
 /* eslint-disable global-require */
 import { ValidationProvider, ValidationObserver } from 'vee-validate'
 import VuexyLogo from '@core/layouts/components/Logo.vue'
-import {
-  BRow, BCol, BLink, BCardTitle, BCardText, BImg, BForm, BFormGroup, BFormInput, BButton,
-} from 'bootstrap-vue'
+import { BRow, BCol, BLink, BCardText, BImg, BForm, BFormGroup, BFormInput, BButton } from 'bootstrap-vue'
 import { required, email } from '@validations'
 import store from '@/store/index'
+import { getHomeRouteForLoggedInUser } from '@/auth/utils'
+
 import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
 
 export default {
@@ -115,18 +109,16 @@ export default {
     BButton,
     BFormGroup,
     BFormInput,
-    BCardTitle,
     BCardText,
     ValidationProvider,
     ValidationObserver,
   },
   data() {
     return {
-      userEmail: '',
+      userCode: '',
       sideImg: require('@/assets/images/pages/forgot-password-v2.svg'),
       // validation
       required,
-      email,
     }
   },
   computed: {
@@ -141,29 +133,28 @@ export default {
   },
   methods: {
     validationForm() {
-      this.$refs.simpleRules.validate().then(success => {
+      this.$refs.twoFactorForm.validate().then(success => {
         if (success) {
-          this.$http.post('/api/auth/password/forgot', {
-            email: this.userEmail,
+          this.$http.post('/api/auth/2fa', {
+            code: this.userCode,
           }).then(response => {
-            this.$toast({
-              component: ToastificationContent,
-              props: {
-                title: response.data.message,
-                icon: 'EditIcon',
-                variant: 'success',
-              },
+            const userData = JSON.parse(localStorage.getItem('userData'))
+
+            // ? This is just for demo purpose. Don't think CASL is role based in this case, we used role in if condition just for ease
+            this.$router.replace(getHomeRouteForLoggedInUser(userData.role)).then(() => {
+              this.$toast({
+                component: ToastificationContent,
+                position: 'top-right',
+                props: {
+                  title: `Welcome ${userData.name}`,
+                  icon: 'CoffeeIcon',
+                  variant: 'success',
+                  text: `You have successfully logged in as ${userData.role}. Now you can start to explore!`,
+                },
+              })
             })
           }).catch(error => {
-            // this.$refs.forgotPassword.setErrors(error.response.data.message)
-            this.$toast({
-              component: ToastificationContent,
-              props: {
-                title: error.response.data.message,
-                icon: 'EditIcon',
-                variant: 'error',
-              },
-            })
+            this.$refs.twoFactorForm.setErrors(error.response.data.message)
           })
         }
       })

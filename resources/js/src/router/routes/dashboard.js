@@ -4,16 +4,16 @@ export default [
     name: 'dashboard-analytics',
     component: () => import('@/views/dashboard/analytics/Analytics.vue'),
     meta: {
-      resource: 'ACL',
+      resource: 'Dashboard',
       action: 'read',
     },
   },
   {
-    path: '/dashboard/ecommerce',
-    name: 'dashboard-ecommerce',
+    path: '/dashboard',
+    name: 'dashboard',
     component: () => import('@/views/dashboard/ecommerce/Ecommerce.vue'),
-        meta: {
-      resource: 'ACL',
+    meta: {
+      resource: 'Dashboard',
       action: 'read',
     },
   },

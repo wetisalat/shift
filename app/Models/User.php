@@ -5,12 +5,19 @@ namespace App\Models;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
+use Illuminate\Auth\Passwords\CanResetPassword as CanResetPasswordTrait;
+use Illuminate\Contracts\Auth\CanResetPassword;
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\Permission\Traits\HasRoles;
+use Illuminate\Notifications\Notifiable;
 
-class User extends Authenticatable
+use App\Mail\SendCodeMail;
+
+class User extends Authenticatable implements MustVerifyEmail, CanResetPassword
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, CanResetPasswordTrait, HasRoles;
+
+    protected $guard_name = 'api';
 
     /**
      * The attributes that are mass assignable.
@@ -21,6 +28,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'two_factor_code',
+        'two_factor_expires_at',
     ];
 
     /**
@@ -41,4 +50,26 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function generateCode($userId)
+    {
+        $code = rand(100000, 999999);
+
+        $user = User::where('id', '=', $userId)->first();
+        $user->update(
+            ['two_factor_code' => $code],
+            ['two_factor_expires_at' => now()->addMinutes(10)],
+        );
+
+        $details = [
+            'title' => 'Your two factor authentication code is:',
+            'code' => $code,
+            'name' => $user->name,
+        ];
+
+        \Mail::to($user->email)->send(new SendCodeMail($details));
+
+
+        return $user;
+    }
 }
