@@ -36,24 +36,40 @@ class PermissionTableSeeder extends Seeder
                 'roles' => [$this->admin_role, $this->client_role, $this->staff_role],
             ], [
                 'action' => 'read',
-                'subject' => 'Admin',
+                'subject' => 'Clients',
+                'roles' => [$this->admin_role],
+            ], [
+                'action' => 'read',
+                'subject' => 'Plan',
+                'roles' => [$this->admin_role],
+            ], [
+                'action' => 'read',
+                'subject' => 'Coupons',
+                'roles' => [$this->admin_role],
+            ], [
+                'action' => 'read',
+                'subject' => 'Leave',
+                'roles' => [$this->admin_role],
+            ], [
+                'action' => 'read',
+                'subject' => 'Lunch',
                 'roles' => [$this->admin_role],
             ], [
                 'action' => 'read',
                 'subject' => 'Staff',
-                'roles' => [$this->admin_role, $this->staff_role],
+                'roles' => [$this->admin_role, $this->client_role, $this->staff_role],
             ], [
                 'action' => 'read',
                 'subject' => 'Todo',
-                'roles' => [$this->client_role],
+                'roles' => [$this->client_role, $this->staff_role],
             ], [
                 'action' => 'read',
                 'subject' => 'Expenses',
-                'roles' => [$this->client_role],
+                'roles' => [$this->client_role, $this->staff_role],
             ], [
                 'action' => 'read',
                 'subject' => 'Schedule',
-                'roles' => [$this->client_role],
+                'roles' => [$this->client_role, $this->staff_role],
             ], [
                 'action' => 'read',
                 'subject' => 'Request',
@@ -61,14 +77,18 @@ class PermissionTableSeeder extends Seeder
             ], [
                 'action' => 'read',
                 'subject' => 'Attendance',
-                'roles' => [$this->client_role],
+                'roles' => [$this->client_role, $this->staff_role],
             ], [
                 'action' => 'read',
                 'subject' => 'Payroll',
                 'roles' => [$this->client_role],
             ], [
                 'action' => 'read',
-                'subject' => 'Attendance',
+                'subject' => 'Analyse',
+                'roles' => [$this->client_role],
+            ], [
+                'action' => 'read',
+                'subject' => 'Profil',
                 'roles' => [$this->client_role],
             ]
         ];

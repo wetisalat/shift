@@ -3,6 +3,10 @@ export default [
     path: '/dashboard',
     name: 'dashboard-staff',
     component: () => import('@/views/staff/dashboard/StaffDashboard.vue'),
+    meta: {
+      resource: 'Dashboard',
+      action: 'read',
+    },
   },
 
   // *===============================================---*
@@ -15,6 +19,8 @@ export default [
     meta: {
       contentRenderer: 'sidebar-left',
       contentClass: 'todo-application',
+      resource: 'Todo',
+      action: 'read',
     },
   },
   {
@@ -25,6 +31,8 @@ export default [
       contentRenderer: 'sidebar-left',
       contentClass: 'todo-application',
       navActiveLink: 'staff-todo',
+      resource: 'Todo',
+      action: 'read',
     },
     beforeEnter(to, _, next) {
       if (['important', 'completed', 'deleted'].includes(to.params.filter)) next()
@@ -39,6 +47,8 @@ export default [
       contentRenderer: 'sidebar-left',
       contentClass: 'todo-application',
       navActiveLink: 'staff-todo',
+      resource: 'Todo',
+      action: 'read',
     },
     beforeEnter(to, _, next) {
       if (['team', 'low', 'medium', 'high', 'update'].includes(to.params.tag)) next()
@@ -53,6 +63,10 @@ export default [
     path: '/expenses',
     name: 'expenses',
     component: () => import('@/views/staff/expenses/Expenses.vue'),
+    meta: {
+      resource: 'Expenses',
+      action: 'read',
+    },
   },
 
   // *===============================================---*
@@ -62,13 +76,18 @@ export default [
     path: '/profil/view/:id',
     name: 'profil-view',
     component: () => import('@/views/staff/profil/users-view/UsersView.vue'),
+    meta: {
+      resource: 'Profil',
+      action: 'read',
+    },
   },
   {
     path: '/profil/edit/:id',
     name: 'profil-edit',
     component: () => import('@/views/staff/profil/users-edit/UsersEdit.vue'),
+    meta: {
+      resource: 'Profil',
+      action: 'read',
+    },
   },
-
-
-
 ]
