@@ -31,7 +31,6 @@ tagVariant
 
 */
 
-import { getUserData } from '../../auth/utils'
 import dashboard from './dashboard'
 import admin from './admin'
 import client from './client'
@@ -42,7 +41,16 @@ import chartsAndMaps from './charts-and-maps'
 import uiElements from './ui-elements'
 import formAndTable from './forms-and-table'
 
-const userData = getUserData()
-console.log({ userData })
 // Array of sections
 export default [...dashboard, ...admin, ...client, ...staff, ...appsAndPages, ...uiElements, ...formAndTable, ...chartsAndMaps, ...others]
+
+export const getUserSections = role => {
+  switch (role) {
+    case 'admin':
+      return admin
+    case 'staff':
+      return staff
+    default:
+      return client
+  }
+}

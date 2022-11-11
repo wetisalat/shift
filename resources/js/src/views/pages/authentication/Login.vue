@@ -236,6 +236,7 @@ import { togglePasswordVisibility } from '@core/mixins/ui/forms'
 import store from '@/store/index'
 
 import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
+import { getUserSections } from '@/navigation/vertical'
 
 export default {
   directives: {
@@ -302,6 +303,10 @@ export default {
                 const userData = userResponse.data
 
                 localStorage.setItem('userData', JSON.stringify(userData))
+
+                const navigationItems = getUserSections(userData.role)
+
+                this.$store.commit('navigationMenu/UPDATE_NAVIGATION_MENU', navigationItems)
 
                 // Updating user ability in CASL plugin instance
                 this.$ability.update(userData.ability ?? [])

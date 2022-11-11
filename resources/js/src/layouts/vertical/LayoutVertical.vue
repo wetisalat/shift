@@ -3,13 +3,12 @@
 
     <router-view />
 
-
   </layout-vertical>
 </template>
 
 <script>
 import LayoutVertical from '@core/layouts/layout-vertical/LayoutVertical.vue'
-import navMenuItems from '@/navigation/vertical'
+// import navMenuItems from '@/navigation/vertical'
 
 export default {
   components: {
@@ -17,8 +16,14 @@ export default {
   },
   data() {
     return {
-      navMenuItems,
+      // navMenuItems,
     }
+  },
+  computed: {
+    navMenuItems() {
+      console.log(this.$store.state)
+      return this.$store.state.navigationMenu.items ?? []
+    },
   },
 }
 </script>
