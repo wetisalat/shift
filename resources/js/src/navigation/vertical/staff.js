@@ -46,10 +46,14 @@ export default [
       {
         title: 'View',
         route: { name: 'profil-view', params: { id: 21 } },
+        resource: 'Profil',
+        action: 'read',
       },
       {
         title: 'Edit',
         route: { name: 'profil-edit', params: { id: 21 } },
+        resource: 'Profil',
+        action: 'read',
       },
     ],
   },

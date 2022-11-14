@@ -89,7 +89,7 @@ class PermissionTableSeeder extends Seeder
             ], [
                 'action' => 'read',
                 'subject' => 'Profil',
-                'roles' => [$this->client_role],
+                'roles' => [$this->staff_role],
             ]
         ];
 
