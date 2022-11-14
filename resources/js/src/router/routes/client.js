@@ -1,7 +1,7 @@
 export default [
   {
     path: '/dashboard',
-    name: 'dashboard',
+    name: 'dashboard-client',
     component: () => import('@/views/client/dashboard/ClientDashboard.vue'),
     meta: {
       resource: 'Dashboard',
