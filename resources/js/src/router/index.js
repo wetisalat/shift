@@ -3,7 +3,11 @@ import VueRouter from 'vue-router'
 
 // Routes
 import { canNavigate } from '@/libs/acl/routeProtection'
-import { isUserLoggedIn, getUserData, getHomeRouteForLoggedInUser } from '@/auth/utils'
+import {
+  isUserLoggedIn,
+  getUserData,
+  getHomeRouteForLoggedInUser,
+} from '@/auth/utils'
 import apps from './routes/apps'
 import dashboard from './routes/dashboard'
 import uiElements from './routes/ui-elements/index'
@@ -11,9 +15,6 @@ import pages from './routes/pages'
 import chartsMaps from './routes/charts-maps'
 import formsTable from './routes/forms-tables'
 import others from './routes/others'
-import admin from './routes/admin'
-import client from './routes/client'
-import staff from './routes/staff'
 
 Vue.use(VueRouter)
 
@@ -32,9 +33,6 @@ const router = new VueRouter({
     ...formsTable,
     ...uiElements,
     ...others,
-    ...admin,
-    ...client,
-    ...staff,
     {
       path: '*',
       redirect: 'error-404',
@@ -56,7 +54,8 @@ router.beforeEach((to, _, next) => {
   // Redirect if logged in
   if (to.meta.redirectIfLoggedIn && isLoggedIn) {
     const userData = getUserData()
-    next(getHomeRouteForLoggedInUser(userData ? userData.role : null))
+
+    next(getHomeRouteForLoggedInUser(userData ? userData?.role : null))
   }
 
   return next()

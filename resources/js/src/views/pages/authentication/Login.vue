@@ -237,6 +237,10 @@ import store from '@/store/index'
 
 import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
 import { getUserSections } from '@/navigation/vertical'
+import { isAdmin, isClient, isStaff } from '@/auth/utils'
+import adminRoutes from '@/router/routes/admin'
+import clientRoutes from '@/router/routes/client'
+import staffRoutes from '@/router/routes/staff'
 
 export default {
   directives: {
@@ -305,6 +309,22 @@ export default {
                 localStorage.setItem('userData', JSON.stringify(userData))
 
                 const navigationItems = getUserSections(userData.role)
+                let userRoutes = []
+
+                // Set routes
+                if (isAdmin(userData.role)) {
+                  userRoutes = adminRoutes
+                }
+
+                if (isClient(userData.role)) {
+                  userRoutes = clientRoutes
+                }
+
+                if (isStaff(userData.role)) {
+                  userRoutes = staffRoutes
+                }
+
+                userRoutes.forEach(route => this.$router.addRoute(route))
 
                 this.$store.commit('navigationMenu/UPDATE_NAVIGATION_MENU', navigationItems)
 

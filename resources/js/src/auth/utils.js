@@ -25,3 +25,7 @@ export const getHomeRouteForLoggedInUser = userRole => {
   // if (userRole === 'client') return '/dashboard'
   return '/dashboard'
 }
+
+export const isAdmin = role => role === 'admin'
+export const isClient = role => role === 'client'
+export const isStaff = role => role === 'staff'

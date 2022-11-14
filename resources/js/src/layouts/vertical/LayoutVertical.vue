@@ -15,13 +15,10 @@ export default {
     LayoutVertical,
   },
   data() {
-    return {
-      // navMenuItems,
-    }
+    return {}
   },
   computed: {
     navMenuItems() {
-      console.log(this.$store.state)
       return this.$store.state.navigationMenu.items ?? []
     },
   },
