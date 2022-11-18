@@ -1,241 +1,350 @@
 <template>
   <div>
 
-    <!-- Header: Personal Info -->
-    <div class="d-flex">
-      <feather-icon
-        icon="UserIcon"
-        size="19"
-      />
-      <h4 class="mb-0 ml-50">
-        Employee Details
+    <!-- Media -->
+    <b-media class="mb-2">
+      <template #aside>
+        <b-avatar
+          ref="previewEl"
+          :src="userData.avatar"
+          :text="avatarText(userData.fullName)"
+          :variant="`light-${resolveUserRoleVariant(userData.role)}`"
+          size="90px"
+          rounded
+        />
+      </template>
+      <h4 class="mb-1">
+        {{ userData.fullName }}
       </h4>
-    </div>
-
-    <!-- form -->
-    <validation-observer ref="simpleRules">
-      <b-form  class="mt-1">
-        <b-row>
-
-          <!-- Field: Gender -->
-          <b-col
-            cols="12"
-            md="6"
-            lg="4"
+      <div class="d-flex flex-wrap">
+        <b-button
+          variant="primary"
+          @click="$refs.refInputEl.click()"
+        >
+          <input
+            ref="refInputEl"
+            type="file"
+            class="d-none"
+            @input="inputImageRenderer"
           >
-            <b-form-group
-              label="Gender"
-              label-for="gender"
-              label-class="mb-1"
-            >
-              <b-form-radio-group
-                id="gender"
-                options="genderOptions"
-                value="male"
-              />
-            </b-form-group>
-          </b-col>
+          <span class="d-none d-sm-inline">Update</span>
+          <feather-icon
+            icon="EditIcon"
+            class="d-inline d-sm-none"
+          />
+        </b-button>
+        <b-button
+          variant="outline-secondary"
+          class="ml-1"
+        >
+          <span class="d-none d-sm-inline">Remove</span>
+          <feather-icon
+            icon="TrashIcon"
+            class="d-inline d-sm-none"
+          />
+        </b-button>
+      </div>
+    </b-media>
 
-          
-          <b-col
-            cols="12"
-            md="6"
-            lg="4"
+    <!-- User Info: Input Fields -->
+    <b-form>
+      <b-row>
+
+        <!-- Field: Gender -->
+        <b-col
+          cols="12"
+          md="4"
+        >
+        <b-form-group
+            label="Gender"
+            label-for="gender"
           >
-            <b-form-group
-              label="Box 2"
-              label-for="basicInput"
-            >
-              <validation-provider
-                #default="{ errors }"
-                name="Last Name"
-                rules="required"
-              >
-                <b-form-input
-                  v-model="name"
-                  :state="errors.length > 0 ? false:null"
-                  placeholder="Your Name"
-                />
-                <small class="text-danger">{{ errors[0] }}</small>
-              </validation-provider>
-            </b-form-group>
-          </b-col>
+            <v-select
+              v-model="userData.gender"
+              :options="genderOptions"
+              :reduce="val => val.value"
+              :clearable="false"
+              input-id="gender"
+            />
+          </b-form-group>
+        </b-col>
 
-
-          <b-col
-            cols="12"
-            md="6"
-            lg="4"
+        <!-- Field: First Name -->
+        <b-col
+          cols="12"
+          md="4"
+        >
+          <b-form-group
+            label="First Name"
+            label-for="firstname"
           >
-            <b-form-group
-              label="Box 3"
-              label-for="basicInput"
-            >
-              <validation-provider
-                #default="{ errors }"
-                name="Full Name"
-                rules="required"
-              >
-                <b-form-input
-                  v-model="name"
-                  :state="errors.length > 0 ? false:null"
-                  placeholder="Your Name"
-                />
-                <small class="text-danger">{{ errors[0] }}</small>
-              </validation-provider>
-            </b-form-group>
-          </b-col>
+            <b-form-input
+              id="firstname"
+              v-model="userData.firstName"
+            />
+          </b-form-group>
+        </b-col>
 
-
-          <b-col
-            cols="12"
-            md="6"
-            lg="4"
+        <!-- Field: Last Name -->
+        <b-col
+          cols="12"
+          md="4"
+        >
+          <b-form-group
+            label="Last Name"
+            label-for="lastname"
           >
-            <b-form-group
-              label="Box 4"
-              label-for="basicInput"
-            >
-              <validation-provider
-                #default="{ errors }"
-                name="Email"
-                rules="required|email"
-              >
-                <b-form-input
-                  v-model="emailValue"
-                  :state="errors.length > 0 ? false:null"
-                  type="email"
-                  placeholder="Your Email"
-                />
-                <small class="text-danger">{{ errors[0] }}</small>
-              </validation-provider>
-            </b-form-group>
-          </b-col>
+            <b-form-input
+              id="lastname"
+              v-model="userData.lastname"
+            />
+          </b-form-group>
+        </b-col>
 
-
-          <b-col
-            cols="12"
-            md="6"
-            lg="4"
+        <!-- Field: Email -->
+        <b-col
+          cols="12"
+          md="4"
+        >
+          <b-form-group
+            label="Email"
+            label-for="email"
           >
-            <b-form-group
-              label="Box 5"
-              label-for="basicInput"
-            >
-              <validation-provider
-                #default="{ errors }"
-                name="Password"
-                vid="Password"
-                rules="required|password"
-              >
-                <b-form-input
-                  v-model="PasswordValue"
-                  type="password"
-                  :state="errors.length > 0 ? false:null"
-                  placeholder="Your Password"
-                />
-                <small class="text-danger">{{ errors[0] }}</small>
-              </validation-provider>
-            </b-form-group>
-          </b-col>
+            <b-form-input
+              id="email"
+              v-model="userData.email"
+              type="email"
+            />
+          </b-form-group>
+        </b-col>
 
+        <!-- Field: Phone Number -->
+        <b-col
+          cols="12"
+          md="4"
+        >
+        <b-form-group
+        label="Phone Number"
+          label-for="phonenumber"
+        >
+          <cleave
+            id="phonenumber"
+            v-model="form.block"
+            class="form-control"
+            :raw="false"
+            :options="options.phonenumber"
+            placeholder="+33 6 12 34 56 78"
+          />
+          </b-form-group>
+        </b-col>
 
-          <b-col
-            cols="12"
-            md="6"
-            lg="4"
+        <!-- Field: Role -->
+        <b-col
+          cols="12"
+          md="4"
+        >
+          <b-form-group
+            label="User Role"
+            label-for="user-role"
           >
-            <b-form-group
-              label="Box 6"
-              label-for="basicInput"
-            >
-              <validation-provider
-                #default="{ errors }"
-                name="Password Confirm"
-                rules="required|confirmed:Password"
-              >
-                <b-form-input
-                  v-model="passwordCon"
-                  :state="errors.length > 0 ? false:null"
-                  type="password"
-                  placeholder="Confirm Password"
-                />
-                <small class="text-danger">{{ errors[0] }}</small>
-              </validation-provider>
-            </b-form-group>
-          </b-col>
+            <v-select
+              v-model="userData.role"
+              :options="roleOptions"
+              :reduce="val => val.value"
+              :clearable="false"
+              input-id="user-role"
+            />
+          </b-form-group>
+        </b-col>
 
-          <!-- submit button -->
-          <b-col>
-            <b-button
-              variant="primary"
-              type="submit"
-              @click.prevent="validationForm"
-            >
-              Submit
-            </b-button>
-          </b-col>
-        </b-row>
-      </b-form>
-    </validation-observer>
+      </b-row>
+    </b-form>
 
+    <!-- PERMISSION TABLE -->
+    <b-card
+      no-body
+      class="border mt-1"
+    >
+      <b-card-header class="p-1">
+        <b-card-title class="font-medium-2">
+          <feather-icon
+            icon="LockIcon"
+            size="18"
+          />
+          <span class="align-middle ml-50">Permission</span>
+        </b-card-title>
+      </b-card-header>
+      <b-table
+        striped
+        responsive
+        class="mb-0"
+        :items="permissionsData"
+      >
+        <template #cell(module)="data">
+          {{ data.value }}
+        </template>
+        <template #cell()="data">
+          <b-form-checkbox :checked="data.value" />
+        </template>
+      </b-table>
+    </b-card>
+
+    <!-- Action Buttons -->
+    <b-button
+      variant="primary"
+      class="mb-1 mb-sm-0 mr-0 mr-sm-1"
+      :block="$store.getters['app/currentBreakPoint'] === 'xs'"
+    >
+      Save Changes
+    </b-button>
+    <b-button
+      variant="outline-secondary"
+      type="reset"
+      :block="$store.getters['app/currentBreakPoint'] === 'xs'"
+    >
+      Reset
+    </b-button>
   </div>
 </template>
 
 <script>
-import { ValidationProvider, ValidationObserver } from 'vee-validate'
 import {
-  BFormInput, 
-  BFormGroup,
-  BFormRadioGroup,
-  BForm, 
-  BRow, 
-  BCol, 
   BButton,
-
+  BMedia,
+  BAvatar,
+  BRow,
+  BCol,
+  BFormGroup,
+  BFormInput,
+  BForm,
+  BTable,
+  BCard,
+  BCardHeader,
+  BCardTitle,
+  BFormCheckbox,
 } from 'bootstrap-vue'
-import {
-  required, email, confirmed, password,
-} from '@validations'
+import { avatarText } from '@core/utils/filter'
+import vSelect from 'vue-select'
+import { useInputImageRenderer } from '@core/comp-functions/forms/form-utils'
+import { ref } from '@vue/composition-api'
+import useUsersList from '../users-list/useUsersList'
+import Cleave from 'vue-cleave-component'
+// eslint-disable-next-line import/no-extraneous-dependencies
+import 'cleave.js/dist/addons/cleave-phone.fr'
 
 export default {
   components: {
-    ValidationProvider,
-    ValidationObserver,
-    BFormInput,
-    BFormGroup,
-    BForm,
+    BButton,
+    BMedia,
+    BAvatar,
     BRow,
     BCol,
-    BButton,
-    BFormRadioGroup,
+    BFormGroup,
+    BFormInput,
+    BForm,
+    BTable,
+    BCard,
+    BCardHeader,
+    BCardTitle,
+    BFormCheckbox,
+    vSelect,
+    Cleave,
   },
-  data() {
-    const genderOptions = [
-      { text: 'Male', value: 'male' },
-      { text: 'Female', value: 'female' },
-    ]
-    return {
-      emailValue: '',
-      name: '',
-      PasswordValue: '',
-      passwordCon: '',
-      required,
-      password,
-      email,
-      confirmed,
-      genderOptions,
-    }
-  },
-  methods: {
-    validationForm() {
-      this.$refs.simpleRules.validate().then(success => {
-        if (success) {
-          // eslint-disable-next-line
-          alert('form submitted!')
-        }
-      })
+  props: {
+    userData: {
+      type: Object,
+      required: true,
     },
+  },
+  setup(props) {
+    const { resolveUserRoleVariant } = useUsersList()
+
+    const roleOptions = [
+      { label: 'Admin', value: 'admin' },
+      { label: 'Author', value: 'author' },
+      { label: 'Editor', value: 'editor' },
+      { label: 'Maintainer', value: 'maintainer' },
+      { label: 'Subscriber', value: 'subscriber' },
+    ]
+
+    const genderOptions = [
+      { label: 'Male', value: 'male' },
+      { label: 'Female', value: 'female' },
+      { label: 'Other', value: 'other' },
+    ]
+
+    const permissionsData = [
+      {
+        module: 'Admin',
+        read: true,
+        write: false,
+        create: false,
+        delete: false,
+      },
+      {
+        module: 'Staff',
+        read: false,
+        write: true,
+        create: false,
+        delete: false,
+      },
+      {
+        module: 'Author',
+        read: true,
+        write: false,
+        create: true,
+        delete: false,
+      },
+      {
+        module: 'Contributor',
+        read: false,
+        write: false,
+        create: false,
+        delete: false,
+      },
+      {
+        module: 'User',
+        read: false,
+        write: false,
+        create: false,
+        delete: true,
+      },
+    ]
+
+    // ? Demo Purpose => Update image on click of update
+    const refInputEl = ref(null)
+    const previewEl = ref(null)
+
+    const { inputImageRenderer } = useInputImageRenderer(refInputEl, base64 => {
+      // eslint-disable-next-line no-param-reassign
+      props.userData.avatar = base64
+    })
+
+    return {
+      resolveUserRoleVariant,
+      avatarText,
+      roleOptions,
+      genderOptions,
+      permissionsData,
+
+      //  ? Demo - Update Image on click of update button
+      refInputEl,
+      previewEl,
+      inputImageRenderer,
+      form: {
+      },
+      options: {
+        phonenumber: {
+          prefix: '+33',
+          phone: true,
+          blocks: [2, 2, 2, 2, 2],
+        },
+      },
+    }
   },
 }
 </script>
+
+<style lang="scss">
+@import '~@resources/scss/vue/libs/vue-select.scss';
+</style>

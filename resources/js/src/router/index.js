@@ -7,7 +7,10 @@ import {
   isUserLoggedIn,
   getUserData,
   getHomeRouteForLoggedInUser,
+  setRoutesForLoggedInUser,
 } from '@/auth/utils'
+import { getUserSections } from '@/navigation/vertical'
+
 import apps from './routes/apps'
 import dashboard from './routes/dashboard'
 import uiElements from './routes/ui-elements/index'
@@ -39,6 +42,13 @@ const router = new VueRouter({
     },
   ],
 })
+
+// Set routes for logged in user on refresh
+if (getUserData()) {
+  const userData = getUserData()
+
+  setRoutesForLoggedInUser(userData.role, router)
+}
 
 router.beforeEach((to, _, next) => {
   const isLoggedIn = isUserLoggedIn()

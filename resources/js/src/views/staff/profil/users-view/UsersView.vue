@@ -42,21 +42,6 @@
         </b-col>
       </b-row>
 
-      <b-row>
-        <b-col
-          cols="12"
-          lg="6"
-        >
-          <user-view-user-timeline-card />
-        </b-col>
-        <b-col
-          cols="12"
-          lg="6"
-        >
-          <card-analytic-revenue />
-        </b-col>
-      </b-row>
-
       <invoice-list />
     </template>
 
@@ -74,8 +59,6 @@ import InvoiceList from '@/views/apps/invoice/invoice-list/InvoiceList.vue'
 import userStoreModule from '../userStoreModule'
 import UserViewUserInfoCard from './UserViewUserInfoCard.vue'
 import UserViewUserPlanCard from './UserViewUserPlanCard.vue'
-import UserViewUserTimelineCard from './UserViewUserTimelineCard.vue'
-import CardAnalyticRevenue from './CardAnalyticRevenue.vue'
 
 export default {
   components: {
@@ -87,8 +70,6 @@ export default {
     // Local Components
     UserViewUserInfoCard,
     UserViewUserPlanCard,
-    UserViewUserTimelineCard,
-    CardAnalyticRevenue,
 
     InvoiceList,
   },

@@ -50,34 +50,53 @@
     <b-form>
       <b-row>
 
-        <!-- Field: Username -->
+        <!-- Field: Gender -->
         <b-col
           cols="12"
           md="4"
         >
-          <b-form-group
-            label="Username"
-            label-for="username"
+        <b-form-group
+            label="Gender"
+            label-for="gender"
           >
-            <b-form-input
-              id="username"
-              v-model="userData.username"
+            <v-select
+              v-model="userData.gender"
+              :options="genderOptions"
+              :reduce="val => val.value"
+              :clearable="false"
+              input-id="gender"
             />
           </b-form-group>
         </b-col>
 
-        <!-- Field: Full Name -->
+        <!-- Field: First Name -->
         <b-col
           cols="12"
           md="4"
         >
           <b-form-group
-            label="Name"
-            label-for="full-name"
+            label="First Name"
+            label-for="firstname"
           >
             <b-form-input
-              id="full-name"
-              v-model="userData.fullName"
+              id="firstname"
+              v-model="userData.firstName"
+            />
+          </b-form-group>
+        </b-col>
+
+        <!-- Field: Last Name -->
+        <b-col
+          cols="12"
+          md="4"
+        >
+          <b-form-group
+            label="Last Name"
+            label-for="lastname"
+          >
+            <b-form-input
+              id="lastname"
+              v-model="userData.lastname"
             />
           </b-form-group>
         </b-col>
@@ -99,23 +118,23 @@
           </b-form-group>
         </b-col>
 
-        <!-- Field: Status -->
+        <!-- Field: Phone Number -->
         <b-col
           cols="12"
           md="4"
         >
-          <b-form-group
-            label="Status"
-            label-for="user-status"
-          >
-            <v-select
-              v-model="userData.status"
-              :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
-              :options="statusOptions"
-              :reduce="val => val.value"
-              :clearable="false"
-              input-id="user-status"
-            />
+        <b-form-group
+        label="Phone Number"
+          label-for="phonenumber"
+        >
+          <cleave
+            id="phonenumber"
+            v-model="form.block"
+            class="form-control"
+            :raw="false"
+            :options="options.phonenumber"
+            placeholder="+33 6 12 34 56 78"
+          />
           </b-form-group>
         </b-col>
 
@@ -130,27 +149,10 @@
           >
             <v-select
               v-model="userData.role"
-              :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
               :options="roleOptions"
               :reduce="val => val.value"
               :clearable="false"
               input-id="user-role"
-            />
-          </b-form-group>
-        </b-col>
-
-        <!-- Field: Email -->
-        <b-col
-          cols="12"
-          md="4"
-        >
-          <b-form-group
-            label="Company"
-            label-for="company"
-          >
-            <b-form-input
-              id="company"
-              v-model="userData.company"
             />
           </b-form-group>
         </b-col>
@@ -226,6 +228,9 @@ import vSelect from 'vue-select'
 import { useInputImageRenderer } from '@core/comp-functions/forms/form-utils'
 import { ref } from '@vue/composition-api'
 import useUsersList from '../users-list/useUsersList'
+import Cleave from 'vue-cleave-component'
+// eslint-disable-next-line import/no-extraneous-dependencies
+import 'cleave.js/dist/addons/cleave-phone.fr'
 
 export default {
   components: {
@@ -243,6 +248,7 @@ export default {
     BCardTitle,
     BFormCheckbox,
     vSelect,
+    Cleave,
   },
   props: {
     userData: {
@@ -261,10 +267,10 @@ export default {
       { label: 'Subscriber', value: 'subscriber' },
     ]
 
-    const statusOptions = [
-      { label: 'Pending', value: 'pending' },
-      { label: 'Active', value: 'active' },
-      { label: 'Inactive', value: 'inactive' },
+    const genderOptions = [
+      { label: 'Male', value: 'male' },
+      { label: 'Female', value: 'female' },
+      { label: 'Other', value: 'other' },
     ]
 
     const permissionsData = [
@@ -318,13 +324,22 @@ export default {
       resolveUserRoleVariant,
       avatarText,
       roleOptions,
-      statusOptions,
+      genderOptions,
       permissionsData,
 
       //  ? Demo - Update Image on click of update button
       refInputEl,
       previewEl,
       inputImageRenderer,
+      form: {
+      },
+      options: {
+        phonenumber: {
+          prefix: '+33',
+          phone: true,
+          blocks: [2, 2, 2, 2, 2],
+        },
+      },
     }
   },
 }

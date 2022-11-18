@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\StaffController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,3 +31,13 @@ Route::group(['prefix' => 'auth'], function () {
 
     Route::get('email/verify/{id}/{hash}', [AuthController::class, 'verifyEmail'])->name('email-verification.verify');
 });
+
+// User routes
+Route::group([
+  'middleware' => 'auth:sanctum', 
+  'verified', 'prefix' => 'client'
+], function () {
+  Route::get('staff', [StaffController::class, 'index'])->name('client.staff.index');
+  Route::post('staff', [StaffController::class, 'store'])->name('client.staff.store');
+});
+

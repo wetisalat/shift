@@ -62,7 +62,7 @@ export default [
   {
     path: '/staff',
     name: 'staff-list',
-    component: () => import('@/views/client/staff/users-list/UsersList.vue'),
+    component: () => import('@/views/client/staff/users-list/UsersListNew.vue'),
     meta: {
       resource: 'Staff',
       action: 'read',
@@ -138,4 +138,18 @@ export default [
       action: 'read',
     },
   },
+
+  // *===============================================---*
+  // *--------- Settings ---- --------------------------*
+  // *===============================================---*
+  {
+    path: '/settings',
+    name: 'settings',
+    component: () => import('@/views/client/settings/AccountSetting.vue'),
+    meta: {
+      resource: 'Settings',
+      action: 'read',
+    },
+  },
+
 ]

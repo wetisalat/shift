@@ -14,11 +14,11 @@
         >
         <b-dropdown
         v-ripple.400="'rgba(113, 102, 240, 0.15)'"
-        text="Select Actions"
+        text="Select Action"
         variant="flat-primary"
         class="dropdown-select d-inline-block ml-50 mr-1"
       >
-      <b-dropdown-item>
+      <b-dropdown-item variant="success">
         <feather-icon
           icon="ThumbsUpIcon"
           class="mr-50"
@@ -26,7 +26,7 @@
         <span class="align-middle">Accept</span>
       </b-dropdown-item>
 
-      <b-dropdown-item>
+      <b-dropdown-item variant="warning">
         <feather-icon
           icon="InfoIcon"
           class="mr-50"
@@ -34,7 +34,7 @@
         <span class="align-middle">Pending</span>
       </b-dropdown-item>
 
-      <b-dropdown-item>
+      <b-dropdown-item variant="danger">
         <feather-icon
           icon="ThumbsDownIcon"
           class="mr-50"
@@ -43,6 +43,7 @@
       </b-dropdown-item>
 
       <b-dropdown-item>
+        <b-dropdown-divider />
         <feather-icon
           icon="PrinterIcon"
           class="mr-50"
@@ -74,13 +75,6 @@
         <span class="align-middle">PDF</span>
       </b-dropdown-item>
 
-      <b-dropdown-item>
-        <feather-icon
-          icon="CopyIcon"
-          class="mr-50"
-        />
-        <span class="align-middle">Copy</span>
-      </b-dropdown-item>
     </b-dropdown>
   </b-col>
 
