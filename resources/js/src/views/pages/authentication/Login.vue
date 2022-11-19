@@ -238,12 +238,9 @@ import { required, email } from '@validations'
 import { togglePasswordVisibility } from '@core/mixins/ui/forms'
 import store from '@/store/index'
 
+import { setRoutesForLoggedInUser } from '@/auth/utils'
 import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
 import { getUserSections } from '@/navigation/vertical'
-import { isAdmin, isClient, isStaff } from '@/auth/utils'
-import adminRoutes from '@/router/routes/admin'
-import clientRoutes from '@/router/routes/client'
-import staffRoutes from '@/router/routes/staff'
 
 export default {
   directives: {
@@ -312,22 +309,9 @@ export default {
                 localStorage.setItem('userData', JSON.stringify(userData))
 
                 const navigationItems = getUserSections(userData.role)
-                let userRoutes = []
 
                 // Set routes
-                if (isAdmin(userData.role)) {
-                  userRoutes = adminRoutes
-                }
-
-                if (isClient(userData.role)) {
-                  userRoutes = clientRoutes
-                }
-
-                if (isStaff(userData.role)) {
-                  userRoutes = staffRoutes
-                }
-
-                userRoutes.forEach(route => this.$router.addRoute(route))
+                setRoutesForLoggedInUser(userData.role, this.$router)
 
                 this.$store.commit('navigationMenu/UPDATE_NAVIGATION_MENU', navigationItems)
 
@@ -357,5 +341,5 @@ export default {
 </script>
 
 <style lang="scss">
-@import '~@resources/scss/vue/pages/page-auth.scss';
+  @import '~@resources/scss/vue/pages/page-auth.scss';
 </style>

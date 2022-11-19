@@ -30,6 +30,8 @@ class User extends Authenticatable implements MustVerifyEmail, CanResetPassword
         'password',
         'two_factor_code',
         'two_factor_expires_at',
+        'user_id',
+        'gender',
     ];
 
     /**

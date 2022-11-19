@@ -18,14 +18,20 @@ export default [
       {
         title: 'List',
         route: 'staff-list',
+        resource: 'Staff',
+        action: 'read',
       },
       {
         title: 'View',
         route: { name: 'staff-view', params: { id: 21 } },
+        resource: 'Staff',
+        action: 'read',
       },
       {
         title: 'Edit',
         route: { name: 'staff-edit', params: { id: 21 } },
+        resource: 'Staff',
+        action: 'read',
       },
     ],
   },

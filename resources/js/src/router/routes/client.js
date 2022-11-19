@@ -62,7 +62,7 @@ export default [
   {
     path: '/staff',
     name: 'staff-list',
-    component: () => import('@/views/client/staff/users-list/UsersList.vue'),
+    component: () => import('@/views/client/staff/users-list/UsersListNew.vue'),
     meta: {
       resource: 'Staff',
       action: 'read',

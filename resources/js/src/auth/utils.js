@@ -1,5 +1,9 @@
 import useJwt from '@/auth/jwt/useJwt'
 
+import adminRoutes from '@/router/routes/admin'
+import clientRoutes from '@/router/routes/client'
+import staffRoutes from '@/router/routes/staff'
+
 /**
  * Return if user is logged in
  * This is completely up to you and how you want to store the token in your frontend application
@@ -25,3 +29,21 @@ export const getHomeRouteForLoggedInUser = userRole => ({ name: `dashboard-${use
 export const isAdmin = role => role === 'admin'
 export const isClient = role => role === 'client'
 export const isStaff = role => role === 'staff'
+
+export const setRoutesForLoggedInUser = (userRole, router) => {
+  let routes = []
+
+  if (isAdmin(userRole)) {
+    routes = adminRoutes
+  }
+
+  if (isClient(userRole)) {
+    routes = clientRoutes
+  }
+
+  if (isStaff(userRole)) {
+    routes = staffRoutes
+  }
+
+  routes.forEach(route => router.addRoute(route))
+}
