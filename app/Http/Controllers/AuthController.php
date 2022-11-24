@@ -189,6 +189,18 @@ class AuthController extends Controller
 
         return response()->json(['message' => 'You entered wrong code', 'user' => now()], SymfonyResponse::HTTP_BAD_REQUEST);
     }
+
+    /**
+     * Resend 2factor
+     */
+    public function resendTwoFactor() 
+    {
+        $user = Auth::user();
+
+        $user->generateCode($user->id);
+
+        return response()->json(['message' => '2fa resent']);
+    }
     
     /**
      * Logout user (Revoke the token)
