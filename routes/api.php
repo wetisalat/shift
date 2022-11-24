@@ -27,6 +27,7 @@ Route::group(['prefix' => 'auth'], function () {
       Route::get('logout', [AuthController::class, 'logout'])->name('auth.logout');
       Route::get('user', [AuthController::class, 'user'])->name('auth.user');
       Route::post('2fa', [AuthController::class, 'verifyTwoFactor'])->name('twofactor.verify');
+      Route::get('2fa/resend', [AuthController::class, 'resendTwoFactor'])->name('twofactor.resend');
     });
 
     Route::get('email/verify/{id}/{hash}', [AuthController::class, 'verifyEmail'])->name('email-verification.verify');
@@ -34,8 +35,8 @@ Route::group(['prefix' => 'auth'], function () {
 
 // User routes
 Route::group([
-  'middleware' => 'auth:sanctum', 
-  'verified', 'prefix' => 'client'
+  'middleware' => ['auth:sanctum', 'verified'],
+  'prefix' => 'client'
 ], function () {
   Route::get('staff', [StaffController::class, 'index'])->name('client.staff.index');
   Route::post('staff', [StaffController::class, 'store'])->name('client.staff.store');
