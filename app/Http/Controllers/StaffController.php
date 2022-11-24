@@ -57,7 +57,7 @@ class StaffController extends Controller
                 'name'  => $request->firstName . ' ' . $request->lastName,
                 'email' => $request->email,
                 'phone' => $request->phoneNumber,
-                'password' => bcrypt('12345678')
+                'password' => bcrypt($request->firstName) // Set initial password as the first name
             ]);
 
             // Assign staff role 

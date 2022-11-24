@@ -53,10 +53,13 @@
           >
             <div class="alert-body font-small-2">
               <p>
-                <small class="mr-50"><span class="font-weight-bold">Admin:</span> admin@demo.com | admin</small>
+                <small class="mr-50"><span class="font-weight-bold">Admin:</span> admin@demo.com | demo</small>
               </p>
               <p>
-                <small class="mr-50"><span class="font-weight-bold">Client:</span> client@demo.com | client</small>
+                <small class="mr-50"><span class="font-weight-bold">Client:</span> client@demo.com | demo</small>
+              </p>
+              <p>
+                <small class="mr-50"><span class="font-weight-bold">Staff:</span> staff@demo.com | demo</small>
               </p>
             </div>
             <feather-icon
@@ -266,7 +269,7 @@ export default {
   data() {
     return {
       status: '',
-      password: 'admin',
+      password: 'demo',
       userEmail: 'admin@demo.com',
       sideImg: require('@/assets/images/pages/login-v2.svg'),
 

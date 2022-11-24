@@ -383,7 +383,7 @@ export default {
         'role',
         'plan',
         { key: 'status', label: 'Status' },
-        'active',
+        'actions',
       ],
       form: {
         firstName: '',
@@ -403,10 +403,10 @@ export default {
       items: [],
       /* eslint-disable global-require */
       status: [{
-        1: 'Active', 2: 'InActive', 3: 'Rejected', 4: 'Resigned', 5: 'Applied',
+        1: 'Active', 2: 'InActive',
       },
       {
-        1: 'light-primary', 2: 'light-success', 3: 'light-danger', 4: 'light-warning', 5: 'light-info',
+        1: 'light-success', 2: 'light-warning',
       }],
 
       // validation rules
