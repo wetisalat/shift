@@ -8,6 +8,8 @@ use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 use App\Models\User;
 use Spatie\Permission\Models\Role;
 
+use Illuminate\Auth\Events\Registered;
+
 class StaffController extends Controller
 {
     /**
@@ -66,6 +68,9 @@ class StaffController extends Controller
             if ($roleExists) {
                 $user->assignRole('staff');
             }
+
+            // Send email verification
+            event(new Registered($user));
 
             return response()->json([
                 'message' => 'Staff addedd successfully'
