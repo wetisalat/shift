@@ -216,10 +216,8 @@
 
       <template #cell(user)="data">
         <div class="d-flex">
-          <b-avatar
-            class="mr-1"
-            :src="data.value"
-          />
+          <b-avatar :text="data.item.initials" variant="light-secondary"/>
+
           <div class="pl-2">
             <div class="text-primary">
               {{ data.item.name }}
@@ -232,7 +230,8 @@
       </template>
 
       <template #cell(actions)="data">
-        <b-icon-file />
+        <feather-icon class="mr-1" icon="FileTextIcon" />
+        <feather-icon class="mr-1" icon="ActivityIcon" />
         <b-icon-trash />
       </template>
 
@@ -432,11 +431,18 @@ export default {
     getStaffList() {
       this.$http.get('/api/client/staff')
         .then(response => {
-          this.items = response.data.staffs.map(staff => ({
-            ...staff,
-            role: staff.roles.length > 0 ? staff.roles[0].name : '',
-            status: staff.email_verified_at !== null ? 1 : 2,
-          }))
+          this.items = response.data.staffs.map(staff => {
+            const [firstName, lastName] = staff.name.split(' ')
+
+            const initials = `${firstName[0]} ${lastName[0]}`
+
+            return {
+              ...staff,
+              role: staff.roles.length > 0 ? staff.roles[0].name : '',
+              status: staff.email_verified_at !== null ? 1 : 2,
+              initials,
+            }
+          })
         })
         .then(console.log)
     },
