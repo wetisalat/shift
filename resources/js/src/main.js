@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import { ToastPlugin, ModalPlugin } from 'bootstrap-vue'
+import { TooltipPlugin, ToastPlugin, ModalPlugin } from 'bootstrap-vue'
 import VueCompositionAPI from '@vue/composition-api'
 
 import i18n from '@/libs/i18n'
@@ -25,6 +25,7 @@ import '@/@fake-db/db'
 
 // BSV Plugin Registration
 Vue.use(ToastPlugin)
+Vue.use(TooltipPlugin)
 Vue.use(ModalPlugin)
 
 // Composition API

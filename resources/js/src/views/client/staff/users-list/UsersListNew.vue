@@ -229,11 +229,28 @@
       </template>
 
       <template #cell(actions)="data">
-        <router-link :to="`/staff/view/${data.item.id}`">
-          <feather-icon class="mr-1" icon="FileTextIcon" />
+        <router-link
+          v-b-tooltip.hover
+          :to="`/staff/view/${data.item.id}`"
+          title="View Staff"
+        >
+          <feather-icon
+            class="mr-1"
+            icon="FileTextIcon"
+          />
         </router-link>
-        <feather-icon class="mr-1" icon="ActivityIcon" />
-        <b-icon-trash />
+        <feather-icon
+          class="mr-1"
+          icon="ActivityIcon"
+        />
+        <b-button
+          v-b-tooltip.hover
+          variant="link"
+          title="Delete Staff"
+          @click="deleteStaff(data.item.id)"
+        >
+          <b-icon-trash />
+        </b-button>
       </template>
 
       <template #cell(status)="data">
@@ -481,6 +498,24 @@ export default {
         }
       })
     },
+    deleteStaff(id) {
+      this.$http.post(`/api/client/staff/${id}`, { _method: 'DELETE' })
+        .then(response => {
+          // Reload the list
+          this.getStaffList()
+
+          this.$toast({
+            component: ToastificationContent,
+            props: {
+              title: response.data.message,
+              icon: 'EditIcon',
+              variant: 'success',
+            },
+          })
+        })
+        .catch(console.log)
+    },
+
     hideModal() {
       this.$refs['staff.modal'].hide()
     },
@@ -490,6 +525,7 @@ export default {
       } else {
         this.items.map(item => ({ ...item, checked: false }))
       }
+      console.log('select all -->', this.selectAll)
     },
   },
   form: {

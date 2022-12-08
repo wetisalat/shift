@@ -140,7 +140,7 @@ class StaffController extends Controller
     {
         $staff = User::find($id);
 
-        $staff->destroy();
+        $staff->delete();
 
         return response()->json([
             'message' => 'Staff deleted successfully'
