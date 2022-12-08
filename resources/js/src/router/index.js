@@ -9,7 +9,6 @@ import {
   getHomeRouteForLoggedInUser,
   setRoutesForLoggedInUser,
 } from '@/auth/utils'
-import { getUserSections } from '@/navigation/vertical'
 
 import apps from './routes/apps'
 import dashboard from './routes/dashboard'

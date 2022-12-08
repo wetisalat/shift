@@ -80,9 +80,6 @@
         </template>
         <user-edit-tab-salary class="mt-2 pt-75" />
       </b-tab>
-
-
-
     </b-tabs>
   </component>
 </template>
@@ -100,8 +97,6 @@ import UserEditTabInformation from './UserEditTabInformation.vue'
 import UserEditTabContract from './UserEditTabContract.vue'
 import UserEditTabSalary from './UserEditTabSalary.vue'
 
-
-
 export default {
   components: {
     BTab,
@@ -114,7 +109,6 @@ export default {
     UserEditTabInformation,
     UserEditTabContract,
     UserEditTabSalary,
-
 
   },
   setup() {

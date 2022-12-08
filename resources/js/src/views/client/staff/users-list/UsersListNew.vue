@@ -197,7 +197,7 @@
     >
       <!-- We are using utility class `text-nowrap` to help illustrate horizontal scrolling -->
       <template #head(id)>
-        <b-form-checkbox />
+        <b-form-checkbox v-model="selectAll" @click="handleSelectAll" />
       </template>
 
       <template #head()="scope">
@@ -209,8 +209,7 @@
       <template #cell(id)="data">
         <b-form-checkbox
           :id="'checkbox' + data.index"
-          v-model="data.item.index"
-          checked="checked"
+          v-model="data.item.checked"
         />
       </template>
 
@@ -230,7 +229,9 @@
       </template>
 
       <template #cell(actions)="data">
-        <feather-icon class="mr-1" icon="FileTextIcon" />
+        <router-link :to="`/staff/view/${data.item.id}`">
+          <feather-icon class="mr-1" icon="FileTextIcon" />
+        </router-link>
         <feather-icon class="mr-1" icon="ActivityIcon" />
         <b-icon-trash />
       </template>
@@ -317,7 +318,6 @@ import {
   BModal,
   VBModal,
   BForm,
-  BIconFile,
   BIconTrash,
 } from 'bootstrap-vue'
 import vSelect from 'vue-select'
@@ -349,7 +349,6 @@ export default {
 
     BModal,
     BForm,
-    BIconFile,
     BIconTrash,
     vSelect,
     Cleave,
@@ -408,6 +407,9 @@ export default {
         1: 'light-success', 2: 'light-warning',
       }],
 
+      // Check all checkbox
+      selectAll: false,
+
       // validation rules
       required,
       email,
@@ -441,6 +443,7 @@ export default {
               role: staff.roles.length > 0 ? staff.roles[0].name : '',
               status: staff.email_verified_at !== null ? 1 : 2,
               initials,
+              checked: false,
             }
           })
         })
@@ -480,6 +483,13 @@ export default {
     },
     hideModal() {
       this.$refs['staff.modal'].hide()
+    },
+    handleSelectAll() {
+      if (this.selectAll) {
+        this.items.map(item => ({ ...item, checked: true }))
+      } else {
+        this.items.map(item => ({ ...item, checked: false }))
+      }
     },
   },
   form: {

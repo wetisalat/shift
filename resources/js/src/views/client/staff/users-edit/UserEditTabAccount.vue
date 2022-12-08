@@ -80,7 +80,7 @@
           >
             <b-form-input
               id="firstname"
-              v-model="userData.firstName"
+              v-model="userData.firstname"
             />
           </b-form-group>
         </b-col>
@@ -123,18 +123,18 @@
           cols="12"
           md="4"
         >
-        <b-form-group
-        label="Phone Number"
-          label-for="phonenumber"
-        >
-          <cleave
-            id="phonenumber"
-            v-model="form.block"
-            class="form-control"
-            :raw="false"
-            :options="options.phonenumber"
-            placeholder="+33 6 12 34 56 78"
-          />
+          <b-form-group
+            label="Phone Number"
+            label-for="phonenumber"
+          >
+            <cleave
+              id="phonenumber"
+              v-model="userData.phone"
+              class="form-control"
+              :raw="false"
+              :options="options.phonenumber"
+              placeholder="+33 6 12 34 56 78"
+            />
           </b-form-group>
         </b-col>
 
@@ -194,6 +194,7 @@
       variant="primary"
       class="mb-1 mb-sm-0 mr-0 mr-sm-1"
       :block="$store.getters['app/currentBreakPoint'] === 'xs'"
+      @click="onSubmit()"
     >
       Save Changes
     </b-button>
@@ -227,10 +228,16 @@ import { avatarText } from '@core/utils/filter'
 import vSelect from 'vue-select'
 import { useInputImageRenderer } from '@core/comp-functions/forms/form-utils'
 import { ref } from '@vue/composition-api'
-import useUsersList from '../users-list/useUsersList'
+import store from '@/store'
+import router from '@/router'
 import Cleave from 'vue-cleave-component'
+import { useToast } from 'vue-toastification/composition'
+
 // eslint-disable-next-line import/no-extraneous-dependencies
 import 'cleave.js/dist/addons/cleave-phone.fr'
+import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
+
+import useUsersList from '../users-list/useUsersList'
 
 export default {
   components: {
@@ -320,6 +327,25 @@ export default {
       props.userData.avatar = base64
     })
 
+    const toast = useToast()
+
+    const onSubmit = () => {
+      store.dispatch('app-user/updateUser', { id: router.currentRoute.params.id })
+        .then(response => {
+          toast({
+            component: ToastificationContent,
+            props: {
+              title: response.data.message,
+              icon: 'EditIcon',
+              variant: 'error',
+            },
+          })
+        })
+        .catch(error => {
+          console.log(error)
+        })
+    }
+
     return {
       resolveUserRoleVariant,
       avatarText,
@@ -340,6 +366,8 @@ export default {
           blocks: [2, 2, 2, 2, 2],
         },
       },
+
+      onSubmit,
     }
   },
 }

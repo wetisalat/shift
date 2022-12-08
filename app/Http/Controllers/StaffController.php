@@ -57,6 +57,8 @@ class StaffController extends Controller
                 'user_id' => auth()->user()->id,
                 'gender' => $request->gender,
                 'name'  => $request->firstName . ' ' . $request->lastName,
+                'firstname' => $request->firstName,
+                'lastname'  => $request->lastName,
                 'email' => $request->email,
                 'phone' => $request->phoneNumber,
                 'password' => bcrypt($request->firstName) // Set initial password as the first name
@@ -91,7 +93,7 @@ class StaffController extends Controller
      */
     public function show($id)
     {
-        //
+        return response()->json( User::find($id) );
     }
 
     /**
@@ -114,7 +116,18 @@ class StaffController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $staff = User::find($id);
+
+        $staff->fill([
+            'gender' => $request->gender,
+            'name'  => $request->firstName . ' ' . $request->lastName,
+            'firstname' => $request->firstName,
+            'lastname'  => $request->lastName,
+        ]);
+
+        return response()->json([
+            'message' => 'Staff updated successfully'
+        ]);
     }
 
     /**
@@ -125,6 +138,26 @@ class StaffController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $staff = User::find($id);
+
+        $staff->destroy();
+
+        return response()->json([
+            'message' => 'Staff deleted successfully'
+        ]);
+    }
+
+    /**
+     * Remove multiple records
+     */
+    public function destroyMultiple() 
+    {
+        $ids = request()->ids;
+
+        User::whereIn('id', $ids)->delete();
+
+        return response()->json([
+            'message' => 'Staffs deleted successfully'
+        ]);
     }
 }

@@ -17,7 +17,7 @@ export default {
     fetchUser(ctx, { id }) {
       return new Promise((resolve, reject) => {
         axios
-          .get(`/apps/user/users/${id}`)
+          .get(`/api/client/staff/${id}`)
           .then(response => resolve(response))
           .catch(error => reject(error))
       })
@@ -26,6 +26,14 @@ export default {
       return new Promise((resolve, reject) => {
         axios
           .post('/apps/user/users', { user: userData })
+          .then(response => resolve(response))
+          .catch(error => reject(error))
+      })
+    },
+    updateUser(ctx, userData) {
+      return new Promise((resolve, reject) => {
+        axios
+          .post(`/api/client/staff/${userData.id}`, { ...userData, _method: 'put' })
           .then(response => resolve(response))
           .catch(error => reject(error))
       })

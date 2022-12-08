@@ -83,7 +83,7 @@ export default [
     component: () => import('@/views/client/staff/users-edit/UsersEdit.vue'),
     meta: {
       resource: 'Staff',
-      action: 'Update',
+      action: 'read',
     },
   },
 

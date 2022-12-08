@@ -40,5 +40,8 @@ Route::group([
 ], function () {
   Route::get('staff', [StaffController::class, 'index'])->name('client.staff.index');
   Route::post('staff', [StaffController::class, 'store'])->name('client.staff.store');
+  Route::get('staff/{id}', [StaffController::class, 'show'])->name('client.staff.show');
+  Route::put('staff/{id}', [StaffController::class, 'update'])->name('client.staff.update');
+  Route::delete('staff', [StaffController::class, 'destroyMultiple'])->name('client.staff.deleteMultiple');
 });
 
