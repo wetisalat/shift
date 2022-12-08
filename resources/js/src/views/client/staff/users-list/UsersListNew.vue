@@ -232,21 +232,27 @@
         <router-link
           v-b-tooltip.hover
           :to="`/staff/view/${data.item.id}`"
-          title="View Staff"
+          title="View"
         >
           <feather-icon
             class="mr-1"
             icon="FileTextIcon"
           />
         </router-link>
-        <feather-icon
-          class="mr-1"
-          icon="ActivityIcon"
-        />
         <b-button
           v-b-tooltip.hover
           variant="link"
-          title="Delete Staff"
+          title="Activity"
+        >
+          <feather-icon
+            class="mr-1"
+            icon="ActivityIcon"
+          />
+        </b-button>
+        <b-button
+          v-b-tooltip.hover
+          variant="link"
+          title="Delete"
           @click="deleteStaff(data.item.id)"
         >
           <b-icon-trash />
