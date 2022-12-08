@@ -229,34 +229,38 @@
       </template>
 
       <template #cell(actions)="data">
-        <router-link
-          v-b-tooltip.hover
-          :to="`/staff/view/${data.item.id}`"
-          title="View"
-        >
-          <feather-icon
-            class="mr-1"
-            icon="FileTextIcon"
-          />
-        </router-link>
-        <b-button
-          v-b-tooltip.hover
-          variant="link"
-          title="Activity"
-        >
-          <feather-icon
-            class="mr-1"
-            icon="ActivityIcon"
-          />
-        </b-button>
-        <b-button
-          v-b-tooltip.hover
-          variant="link"
-          title="Delete"
-          @click="deleteStaff(data.item.id)"
-        >
-          <b-icon-trash />
-        </b-button>
+        <div class="action-btns">
+          <router-link
+            v-b-tooltip.hover
+            :to="`/staff/view/${data.item.id}`"
+            title="View"
+          >
+            <feather-icon
+              class="mr-1"
+              icon="FileTextIcon"
+            />
+          </router-link>
+          <b-button
+            v-b-tooltip.hover
+            variant="link"
+            title="Activity"
+            class="px-0"
+          >
+            <feather-icon
+              class="mr-1"
+              icon="ActivityIcon"
+            />
+          </b-button>
+          <b-button
+            v-b-tooltip.hover
+            class="px-0"
+            variant="link"
+            title="Delete"
+            @click="deleteStaff(data.item.id)"
+          >
+            <b-icon-trash />
+          </b-button>
+        </div>
       </template>
 
       <template #cell(status)="data">
@@ -550,4 +554,10 @@ export default {
   @import '~@resources/scss/vue/libs/vue-select.scss';
   @import '~@resources/scss/vue/libs/vue-flatpicker.scss';
   @import '~@resources/scss/vue/pages/page-auth.scss';
+
+  .action-btns {
+    a, button {
+      color: rgba(110, 107, 123)
+    }
+  }
 </style>
