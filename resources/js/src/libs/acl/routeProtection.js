@@ -1,7 +1,6 @@
 import ability from './ability'
 
 export const canNavigate = to => {
-  console.log(to, ability)
   return to.matched.some(route => ability.can(route.meta.action || 'read', route.meta.resource))
 }
 

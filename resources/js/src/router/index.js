@@ -45,7 +45,6 @@ const router = new VueRouter({
 // Set routes for logged in user on refresh
 if (getUserData()) {
   const userData = getUserData()
-
   setRoutesForLoggedInUser(userData.role, router)
 }
 

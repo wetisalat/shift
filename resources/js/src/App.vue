@@ -21,6 +21,8 @@ import { $themeColors, $themeBreakpoints, $themeConfig } from '@themeConfig'
 import { provideToast } from 'vue-toastification/composition'
 import { watch } from '@vue/composition-api'
 import useAppConfig from '@core/app-config/useAppConfig'
+import { getUserSections } from '@/navigation/vertical'
+import { getUserData } from '@/auth/utils'
 
 import { useWindowSize, useCssVar } from '@vueuse/core'
 // import BuyNow from '@/components/BuyNow.vue'
@@ -99,6 +101,14 @@ export default {
     watch(windowWidth, val => {
       store.commit('app/UPDATE_WINDOW_WIDTH', val)
     })
+
+    const userData = getUserData()
+
+    if (userData) {
+      const navigationItems = getUserSections(userData.role)
+
+      store.commit('navigationMenu/UPDATE_NAVIGATION_MENU', navigationItems)
+    }
 
     return {
       skinClasses,
