@@ -165,7 +165,7 @@
             sm="6"
             class="d-flex align-items-center justify-content-center justify-content-sm-start"
           >
-          <v-select
+            <v-select
               v-model="perPage"
               :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
               :options="perPageOptions"
@@ -233,11 +233,8 @@ import {
   BInputGroupAppend,
 
   BFormGroup,
-  BFormSelect,
-  BCardBody,
 } from 'bootstrap-vue'
 import vSelect from 'vue-select'
-import Ripple from 'vue-ripple-directive'
 import store from '@/store'
 import { ref, onUnmounted } from '@vue/composition-api'
 import { avatarText } from '@core/utils/filter'
@@ -264,7 +261,6 @@ export default {
     BInputGroup,
     BInputGroupAppend,
     BFormGroup,
-    BFormSelect,
     vSelect,
   },
   setup() {
@@ -325,7 +321,7 @@ export default {
     return {
       filter: null,
       filterOn: [],
-      
+
       // Sidebar
       isAddNewUserSidebarActive,
 
@@ -341,7 +337,6 @@ export default {
       isSortDirDesc,
       refUserListTable,
       refetchData,
-      filter: null,
 
       // Filter
       avatarText,

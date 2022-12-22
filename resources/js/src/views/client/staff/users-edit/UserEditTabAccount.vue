@@ -144,21 +144,65 @@
           md="4"
         >
           <b-form-group
-            label="User Role"
-            label-for="user-role"
+            label="Group"
+            label-for="group"
           >
             <v-select
               v-model="userData.role"
-              :options="roleOptions"
-              :reduce="val => val.value"
+              label="name"
+              :options="userGroups"
+              :reduce="val => val.id"
               :clearable="false"
               input-id="user-role"
             />
+
+            <!-- button -->
+            <b-button
+              id="toggle-btn"
+              v-ripple.400="'rgba(113, 102, 240, 0.15)'"
+              v-b-tooltip.hover.right="'Add a group'"
+              v-b-modal.modal-prevent-closing
+              variant="flat-primary"
+              class="btn-icon"
+            >
+              <feather-icon icon="PlusCircleIcon" />
+            </b-button>
           </b-form-group>
         </b-col>
 
       </b-row>
     </b-form>
+
+    <!-- modal -->
+    <b-modal
+      id="modal-prevent-closing"
+      ref="my-modal"
+      title="Submit a Group"
+      ok-title="Submit"
+      cancel-variant="outline-secondary"
+      @show="resetModal"
+      @hidden="resetModal"
+      @ok="handleOk"
+    >
+      <form
+        ref="grpForm"
+        @submit.stop.prevent="handleSubmitGroup"
+      >
+        <b-form-group
+          :state="grpNameState"
+          label="Group Name"
+          label-for="name-input"
+          invalid-feedback="Group is required"
+        >
+          <b-form-input
+            id="name-input"
+            v-model="grpName"
+            :state="grpNameState"
+            required
+          />
+        </b-form-group>
+      </form>
+    </b-modal>
 
     <!-- PERMISSION TABLE -->
     <b-card
@@ -223,6 +267,8 @@ import {
   BCardHeader,
   BCardTitle,
   BFormCheckbox,
+  VBModal,
+  VBTooltip,
 } from 'bootstrap-vue'
 import { avatarText } from '@core/utils/filter'
 import vSelect from 'vue-select'
@@ -232,6 +278,7 @@ import store from '@/store'
 import router from '@/router'
 import Cleave from 'vue-cleave-component'
 import { useToast } from 'vue-toastification/composition'
+import Ripple from 'vue-ripple-directive'
 
 // eslint-disable-next-line import/no-extraneous-dependencies
 import 'cleave.js/dist/addons/cleave-phone.fr'
@@ -257,22 +304,81 @@ export default {
     vSelect,
     Cleave,
   },
+  directives: {
+    'b-modal': VBModal,
+    'b-tooltip': VBTooltip,
+    Ripple,
+  },
   props: {
     userData: {
       type: Object,
       required: true,
     },
   },
+  data() {
+    return {
+      grpName: '',
+      grpNameState: null,
+
+      userGroups: [],
+    }
+  },
+  created() {
+    store.dispatch('app-user/fetchGroups')
+      .then(res => {
+        this.userGroups = res.data
+      })
+  },
+  methods: {
+    checkFormValidity() {
+      const valid = this.$refs.grpForm.checkValidity()
+      this.grpNameState = valid
+      return valid
+    },
+    resetModal() {
+      this.grpName = ''
+      this.grpNameState = null
+    },
+    handleOk(bvModalEvt) {
+      // Prevent modal from closing
+      bvModalEvt.preventDefault()
+      // Trigger submit handler
+      this.handleSubmitGroup()
+    },
+    handleSubmitGroup() {
+      // Exit when the form isn't valid
+      if (!this.checkFormValidity()) {
+        return
+      }
+
+      // Submit to the API
+      store.dispatch('app-user/addGroup', { name: this.grpName })
+        .then(response => {
+          store.dispatch('app-user/fetchGroups')
+            .then(res => {
+              this.userGroups = res.data
+            })
+
+          this.$toast({
+            component: ToastificationContent,
+            props: {
+              title: response.data.message,
+              icon: 'EditIcon',
+              variant: 'error',
+            },
+          })
+        })
+        .catch(error => {
+          console.log(error)
+        })
+      // Hide the modal manually
+      this.$nextTick(() => {
+        this.$refs['my-modal'].toggle('#toggle-btn')
+      })
+    },
+  },
   setup(props) {
     const { resolveUserRoleVariant } = useUsersList()
-
-    const roleOptions = [
-      { label: 'Admin', value: 'admin' },
-      { label: 'Author', value: 'author' },
-      { label: 'Editor', value: 'editor' },
-      { label: 'Maintainer', value: 'maintainer' },
-      { label: 'Subscriber', value: 'subscriber' },
-    ]
 
     const genderOptions = [
       { label: 'Male', value: 'male' },
@@ -349,7 +455,6 @@ export default {
     return {
       resolveUserRoleVariant,
       avatarText,
-      roleOptions,
       genderOptions,
       permissionsData,
 

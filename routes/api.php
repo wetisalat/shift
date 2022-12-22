@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\GroupController;
 use App\Http\Controllers\StaffController;
 
 /*
@@ -15,7 +16,6 @@ use App\Http\Controllers\StaffController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
 
 Route::group(['prefix' => 'auth'], function () {
     Route::post('login', [AuthController::class, 'login'])->name('auth.login');
@@ -35,14 +35,17 @@ Route::group(['prefix' => 'auth'], function () {
 
 // User routes
 Route::group([
-  'middleware' => ['auth:sanctum', 'verified'],
-  'prefix' => 'client'
+  'middleware' => ['auth:sanctum', 'verified'],  
 ], function () {
-  Route::get('staff', [StaffController::class, 'index'])->name('client.staff.index');
-  Route::post('staff', [StaffController::class, 'store'])->name('client.staff.store');
-  Route::get('staff/{id}', [StaffController::class, 'show'])->name('client.staff.show');
-  Route::put('staff/{id}', [StaffController::class, 'update'])->name('client.staff.update');
-  Route::delete('staff/{id}', [StaffController::class, 'destroy'])->name('client.staff.delete');
-  Route::delete('staff', [StaffController::class, 'destroyMultiple'])->name('client.staff.deleteMultiple');
+  Route::group(['prefix' => 'client'], function() {
+    Route::get('staff', [StaffController::class, 'index'])->name('client.staff.index');
+    Route::post('staff', [StaffController::class, 'store'])->name('client.staff.store');
+    Route::get('staff/{id}', [StaffController::class, 'show'])->name('client.staff.show');
+    Route::put('staff/{id}', [StaffController::class, 'update'])->name('client.staff.update');
+    Route::delete('staff/{id}', [StaffController::class, 'destroy'])->name('client.staff.delete');
+    Route::delete('staff', [StaffController::class, 'destroyMultiple'])->name('client.staff.deleteMultiple');
+
+    Route::resource('groups', GroupController::class);
+  });
 });
 
