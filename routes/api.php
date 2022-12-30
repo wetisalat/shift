@@ -49,3 +49,18 @@ Route::group([
   });
 });
 
+Route::group(['middleware' => ['auth:sanctum', 'verified']], function(){
+  Route::get('apps/todo/tasks', [TodoController::class, 'index'])->name('fetch-tasks');
+  Route::post('apps/todo/tasks', [TodoController::class, 'store'])->name('store-tasks');
+  Route::post('apps/todo/tasks/xyxy/{todo}', [TodoController::class, 'update'])->name('update-tasks');
+  Route::delete('apps/todo/tasks/xyxy/{todo}', [TodoController::class, 'destroy'])->name('remove-tasks');
+});
+
+Route::post('expenses', [ExpensesController::class, 'expenses']);
+Route::post('analyse', [ExpensesController::class, 'analyse']);
+Route::any('expenses/status/{id}', [ExpensesController::class, 'updateStaffStatus']);
+Route::any('expenses/download/{id}', [ExpensesController::class, 'expenses_download']);
+Route::post('query/expenses', [ExpensesController::class, 'query_expenses']);
+Route::post('add-expenses', [ExpensesController::class, 'add_expenses']);
+Route::post('expenses/delete', [ExpensesController::class, 'expenses_delete']);
+
